@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {getAuth, createUserWithEmailAndPassword, onAuthStateChanged, User} from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
-import FontIcon from "../../components/FontIcon";
 import app from "../../firebase";
 import FormInput from "../../components/FormInput";
 import logo from "../../assets/images/logo-devlinks-large.svg";
-//import { logo } from "../../assets";
+
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({

@@ -1,7 +1,6 @@
 import React from "react";
 import FontIcon from "../FontIcon";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+
 
 interface FormInputProps {
   label: string;

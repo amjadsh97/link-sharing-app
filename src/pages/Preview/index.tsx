@@ -3,7 +3,6 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {doc, getDoc} from 'firebase/firestore';
 import {db} from '../../firebase.tsx';
 import {LinkProps, User} from "../../utils/contants.tsx";
-import illustrationPhone from "../../assets/images/illustration-phone-mockup.svg";
 import frontendMentor from "../../assets/images/icon-frontend-mentor.svg";
 import FontIcon from "../../components/FontIcon";
 import {useToast} from "../../components/Toast";

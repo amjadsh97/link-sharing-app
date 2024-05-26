@@ -8,9 +8,9 @@ import frontendMentor from './assets/images/icon-frontend-mentor.svg';
 import Header from './components/Header';
 import FormInput from "./components/FormInput";
 import {ReactSortable} from "react-sortablejs";
-import app, {db} from "./firebase.tsx";
-import {collection, doc, setDoc, getDoc, addDoc, getFirestore} from 'firebase/firestore';
-import {getAuth, signOut, onAuthStateChanged} from "firebase/auth";
+import {db} from "./firebase.tsx";
+import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "./components/Toast";
 import iconSaved from "./assets/images/icon-changes-saved.svg"
@@ -18,6 +18,7 @@ import avatar from "./assets/images/default-avatar-profile-icon-social-600nw-167
 import './styles/reset.css';
 import './styles/App.css';
 import "./styles/style-mobile.css"
+
 const isGeneralUrlValid = (url: string) => {
   const regex = /^(https?:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}(:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(#[-a-z\d_]*)?)$/i;
   return regex.test(url);

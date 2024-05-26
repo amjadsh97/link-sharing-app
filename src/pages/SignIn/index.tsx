@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, User} from "firebase/auth";
 import {Link, useNavigate} from "react-router-dom";
 import app from "../../firebase";
-import FontIcon from "../../components/FontIcon";
 import logo from "../../assets/images/logo-devlinks-large.svg"
 import FormInput from "../../components/FormInput";
 
