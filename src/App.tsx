@@ -24,8 +24,13 @@ const isGeneralUrlValid = (url: string) => {
   return regex.test(url);
 };
 
+interface LinkValidationErrors {
+  platformValidationMessage?: string;
+  urlValidationMessage?: string;
+}
+
 const validateUrl = (platform: string, url: string) => {
-  const errors: LinkProps = {};
+  const errors: LinkValidationErrors = {};
 
   if (!platform) {
     errors.platformValidationMessage = 'Platform is required';
@@ -44,9 +49,16 @@ const validateUrl = (platform: string, url: string) => {
   return errors;
 };
 
+const initialUserState: User = {
+  firstName: "",
+  lastName: "",
+  profileImage: "",
+  email: "",
+};
+
 const App: React.FC = () => {
   const [links, setLinks] = useState<LinkProps[]>([]);
-  const [userData, setUserData] = useState<User>({firstName: "", lastName: "", email: "", profileImage: ""});
+  const [userData, setUserData] = useState<User>(initialUserState);
   const [profileImage, setProfileImage] = useState<string | ArrayBuffer | null>(null);
   const [loading, setLoading] = useState<boolean>(true)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -58,8 +70,17 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   const {showToast} = useToast();
 
+  const generateId = (): string => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = (Math.random() * 16) | 0,
+        v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+
   const handleAddLinks = () => {
     const newLink: LinkProps = {
+      id: generateId(),
       platform: '',
       url: '',
       platformValidationMessage: '',
@@ -124,7 +145,11 @@ const App: React.FC = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfileImage(e.target?.result);
+        //setProfileImage(e.target?.result);
+        const result = e.target?.result;
+        if (result !== undefined) {
+          setProfileImage(result as string | ArrayBuffer); // Ensure result is not undefined
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -178,7 +203,7 @@ const App: React.FC = () => {
           // Combine existing data with new data without duplicates
           const existingLinks = existingData.links || [];
           const newLinks = updatedLinks.filter(link =>
-            !existingLinks.some(existingLink => existingLink.url === link.url)
+            !existingLinks.some((existingLink:LinkProps) => existingLink.url === link.url)
           );
 
           const newUserData = {
@@ -218,19 +243,19 @@ const App: React.FC = () => {
             setLinks(data.links || []);
             setProfileImage(data.profileImage || null);
           } else {
-            setUserData({});
+            setUserData(initialUserState);
             setLinks([]);
             setProfileImage(null);
           }
         } catch (error) {
           console.error('Error fetching user data: ', error);
-          setUserData({});
+          setUserData(initialUserState);
           setLinks([]);
           setProfileImage(null);
         }
         setLoading(false);
       } else {
-        setUserData({});
+        setUserData(initialUserState);
         setLinks([]);
         setProfileImage(null);
         setLoading(false);
@@ -342,8 +367,7 @@ const App: React.FC = () => {
                                   onChange={(e) => handleUrlChange(index, e.target.value)}
                                   className={link.urlValidationMessage ? 'invalid' : ''}
                                 />
-                                {link.urlValidationMessage &&
-													        <span className='error-message'>{link.urlValidationMessage}</span>}
+                                {link.urlValidationMessage && <span className='error-message'>{link.urlValidationMessage}</span>}
                               </div>
                             </div>
                           </div>
@@ -430,7 +454,7 @@ const App: React.FC = () => {
                     <FormInput
                       label="Email"
                       name="email"
-                      value={userData.email}
+                      value={userData.email ?? ""}
                       type="email"
                       placeholder="e.g. email@example.com"
                       onChange={handleForm}

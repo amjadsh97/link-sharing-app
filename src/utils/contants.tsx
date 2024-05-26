@@ -16,8 +16,11 @@ export const listLinks = [
 
 ]
 
+interface ItemInterface {
+  id: string;
+}
 
-interface LinkProps {
+interface LinkProps extends ItemInterface {
   platform?: string;
   url?: string;
   platformValidationMessage?: string;

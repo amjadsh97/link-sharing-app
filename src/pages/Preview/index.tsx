@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import  {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import {doc, getDoc} from 'firebase/firestore';
 import {db} from '../../firebase.tsx';
@@ -9,9 +9,16 @@ import {useToast} from "../../components/Toast";
 import {getAuth} from "firebase/auth";
 import {Spin} from "antd";
 
+const initialUserState: User = {
+  firstName: "",
+  lastName: "",
+  profileImage: "",
+  email: "",
+};
+
 const PreviewPage = () => {
   const {userId} = useParams(); // Get the user ID from the URL
-  const [userData, setUserData] = useState<User>(null);
+  const [userData, setUserData] = useState<User>(initialUserState);
   const [links, setLinks] = useState([]);
   const [imageSrc, setImageSrc] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,23 +30,28 @@ const PreviewPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const userDocRef = doc(db, 'users', userId);
-        const userDocSnap = await getDoc(userDocRef);
+      if (userId) {
+        try {
+          const userDocRef = doc(db, 'users', userId);
+          const userDocSnap = await getDoc(userDocRef);
 
-        if (userDocSnap.exists()) {
-          const data = userDocSnap.data();
-          setUserData(data.additionalData || {});
-          setLinks(data.links || []);
-          setImageSrc(data.profileImage || null);
-        } else {
-          console.error('No such document!');
+          if (userDocSnap.exists()) {
+            const data = userDocSnap.data();
+            setUserData(data.additionalData || {});
+            setLinks(data.links || []);
+            setImageSrc(data.profileImage || null);
+          } else {
+            console.error('No such document!');
+          }
+        } catch (error) {
+          console.error('Error fetching user data: ', error);
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Error fetching user data: ', error);
-      } finally {
-        setLoading(false);
+      } else {
+        console.error('User ID is undefined.');
       }
+
     };
 
     fetchUserData();
@@ -48,7 +60,7 @@ const PreviewPage = () => {
 
   const handleShareLink = async () => {
     try {
-      await navigator.clipboard.writeText(window.location);
+      await navigator.clipboard.writeText(window.location.href);
       showToast(<span><FontIcon name={"link-copied-to-clipboard"} size={"2rem"}/> The link has been copied to your clipboard!</span>);
     } catch (error) {
       console.error("Failed to copy: ", error);
@@ -76,7 +88,7 @@ const PreviewPage = () => {
           {userData?.firstName !== "" && (
             <div className="user-data">
               <div className="user-avatar">
-                <img src={imageSrc} alt=""/>
+                {imageSrc && <img src={imageSrc} alt=""/>}
               </div>
               <span className='heading-s user-name'>{userData.firstName} {userData.lastName}</span>
               <span className='body-m user-email'>{userData.email}</span>
