@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App.tsx'
-import {BrowserRouter, Routes, Route, Link, useLocation, useNavigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Preview from "./pages/Preview";
