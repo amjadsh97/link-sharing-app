@@ -88,7 +88,7 @@ const App: React.FC = () => {
     await saveLinksToFirestore(newLinks);
   };
 
-  const saveLinksToFirestore = async (updatedLinks: Link[]) => {
+  const saveLinksToFirestore = async (updatedLinks: LinkProps[]) => {
     const auth = getAuth();
     const user = auth.currentUser;
 
@@ -328,8 +328,7 @@ const App: React.FC = () => {
                                 options={listLinks}
                                 value={link.platform || undefined}
                               />
-                              {link.platformValidationMessage &&
-												        <span className='error-message'>{link.platformValidationMessage}</span>}
+                              {link.platformValidationMessage && <span className='error-message'>{link.platformValidationMessage}</span>}
                             </div>
                             <div className='input-wrapper'>
                               <span className='select-label'>Link</span>
