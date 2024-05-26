@@ -181,16 +181,20 @@ const App: React.FC = () => {
       return;
     }
 
-    if (!userData.firstName || !userData.lastName) {
-      setErrors({
-        firstName: !userData.firstName ? 'Please enter your first name' : '',
-        lastName: !userData.lastName ? 'Please enter your last name' : '',
-      });
-      return;
+    if (document.querySelector("body")?.classList.contains("show-profile")) {
+      if (!userData.firstName || !userData.lastName) {
+        setErrors({
+          firstName: !userData.firstName ? 'Please enter your first name' : '',
+          lastName: !userData.lastName ? 'Please enter your last name' : '',
+        });
+        return;
+      }
     }
 
     onAuthStateChanged(auth, async (user) => {
+
       if (user) {
+
         const userId = user.uid;
 
         try {
