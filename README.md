@@ -40,8 +40,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://github.com/amjadsh97/link-sharing-app)
-- Live Site URL: [Add live site URL here](https://link-sharing-app-ten-silk.vercel.app/)
+- Solution URL: https://github.com/amjadsh97/link-sharing-app
+- Live Site URL: https://link-sharing-app-ten-silk.vercel.app/
 
 ## My process
 
